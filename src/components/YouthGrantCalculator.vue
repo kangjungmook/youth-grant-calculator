@@ -120,11 +120,11 @@ const chipClass = (on) =>
           >
             {{ CURRENT_YEAR }}년 9월 기준 정책 반영
           </span>
-          <h1 class="mt-4 text-[29px] font-extrabold leading-[1.35] tracking-[-1.1px] text-pretty">
+          <h1 class="mt-4 text-[29px] font-extrabold leading-[1.35] tracking-[-1.1px] text-pretty break-keep">
             내 조건에 맞는 청년 지원금<br />
             <span class="text-[#3182F6]">1초 만에</span> 확인하기
           </h1>
-          <p class="mt-3 text-[15px] leading-[1.55] tracking-[-.3px] text-[#6B7684] text-pretty">
+          <p class="mt-3 text-[15px] leading-[1.55] tracking-[-.3px] text-[#6B7684] text-pretty break-keep">
             나이·소득·거주 형태만 입력하면 받을 수 있는 적금, 월세, 세금 혜택을 한 번에 모아드려요.
           </p>
         </div>
@@ -236,7 +236,7 @@ const chipClass = (on) =>
               >
               <span class="flex min-w-0 flex-1 flex-col gap-[3px]">
                 <span class="text-sm font-bold tracking-[-.3px]">{{ t.title }}</span>
-                <span class="text-[13px] leading-[1.55] tracking-[-.2px] text-[#6B7684] text-pretty">{{ t.body }}</span>
+                <span class="text-[13px] leading-[1.55] tracking-[-.2px] text-[#6B7684] text-pretty break-keep">{{ t.body }}</span>
               </span>
             </div>
           </div>
@@ -341,10 +341,10 @@ const chipClass = (on) =>
 
               <div class="mt-3.5 rounded-[14px] bg-[#F2F4F6] px-4 py-3.5">
                 <div class="text-[11.5px] font-bold text-[#8B95A1]">예상 혜택</div>
-                <div class="mt-1 text-[18px] font-extrabold tracking-[-.6px] text-[#1B64DA] text-pretty">
+                <div class="mt-1 text-[18px] font-extrabold tracking-[-.6px] text-[#1B64DA] text-pretty break-keep">
                   {{ p.benefit }}
                 </div>
-                <div class="mt-1.5 text-[13px] leading-[1.5] tracking-[-.2px] text-[#4E5968] text-pretty">
+                <div class="mt-1.5 text-[13px] leading-[1.5] tracking-[-.2px] text-[#4E5968] text-pretty break-keep">
                   {{ p.summary }}
                 </div>
               </div>
@@ -353,7 +353,7 @@ const chipClass = (on) =>
                 <li
                   v-for="d in p.details"
                   :key="d"
-                  class="flex items-start gap-[9px] text-[13.5px] leading-[1.55] tracking-[-.2px] text-[#4E5968] text-pretty"
+                  class="flex items-start gap-[9px] text-[13.5px] leading-[1.55] tracking-[-.2px] text-[#4E5968] text-pretty break-keep"
                 >
                   <span class="mt-1.5 h-[5px] w-[5px] flex-none rounded-full bg-[#C4CBD3]"></span>{{ d }}
                 </li>
@@ -394,7 +394,7 @@ const chipClass = (on) =>
                 </div>
                 <div class="min-w-0 flex-1">
                   <div class="text-[14.5px] font-bold tracking-[-.3px] text-[#6B7684]">{{ p.name }}</div>
-                  <div class="mt-[3px] text-[13px] leading-[1.5] tracking-[-.2px] text-[#8B95A1] text-pretty">
+                  <div class="mt-[3px] text-[13px] leading-[1.5] tracking-[-.2px] text-[#8B95A1] text-pretty break-keep">
                     {{ p.missMsg }}
                   </div>
                 </div>
@@ -402,7 +402,7 @@ const chipClass = (on) =>
             </div>
             <div class="mt-3.5 flex gap-2.5 rounded-[14px] bg-[#F0F7FF] px-4 py-[15px]">
               <span class="flex-none text-[15px]">💡</span>
-              <span class="text-[13.5px] font-semibold leading-[1.55] tracking-[-.2px] text-[#1B64DA] text-pretty">{{
+              <span class="text-[13.5px] font-semibold leading-[1.55] tracking-[-.2px] text-[#1B64DA] text-pretty break-keep">{{
                 tip
               }}</span>
             </div>
@@ -419,7 +419,7 @@ const chipClass = (on) =>
                 >
                 <span class="flex min-w-0 flex-1 flex-col gap-[3px]">
                   <span class="text-sm font-bold tracking-[-.3px]">{{ t.title }}</span>
-                  <span class="text-[13px] leading-[1.55] tracking-[-.2px] text-[#6B7684] text-pretty">{{
+                  <span class="text-[13px] leading-[1.55] tracking-[-.2px] text-[#6B7684] text-pretty break-keep">{{
                     t.body
                   }}</span>
                 </span>
@@ -435,7 +435,7 @@ const chipClass = (on) =>
             조건 바꿔서 다시 계산하기
           </button>
 
-          <p class="mx-2 mt-[22px] text-[11.5px] leading-[1.6] tracking-[-.2px] text-[#6B7684] text-pretty">
+          <p class="mx-2 mt-[22px] text-[11.5px] leading-[1.6] tracking-[-.2px] text-[#6B7684] text-pretty break-keep">
             본 화면은 UI 목업으로, 정책 금액·조건은 예시 데이터입니다. 실제 신청 자격은 각 기관 공고를 확인해 주세요.
           </p>
         </div>
