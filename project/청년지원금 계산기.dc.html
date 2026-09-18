@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+html,body{margin:0;background:#F2F4F6;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:#3182F6;text-decoration:none}
+a:hover{color:#1B64DA}
+input[type=range]{-webkit-appearance:none;appearance:none;background:transparent}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:99px;background:#E5E8EB}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;height:26px;width:26px;margin-top:-10px;border-radius:99px;background:#fff;border:1px solid rgba(0,0,0,.06);box-shadow:0 2px 8px rgba(0,0,0,.18)}
+input:focus{outline:none}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
+@media (min-width:900px){#rail-l,#rail-r{display:flex !important}}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#F2F4F6;font-family:'Pretendard Variable',Pretendard,system-ui,sans-serif;color:#191F28;display:flex;justify-content:center;align-items:flex-start;gap:14px;padding:0 0 120px">
+
+  <aside id="rail-l" style="display:none;width:190px;flex:none;position:sticky;top:56px;flex-direction:column;gap:14px;padding-top:56px">
+    <div style="font-size:13px;font-weight:800;letter-spacing:-.3px;color:#8B95A1">2026 청년정책 브리핑</div>
+    <div style="background:#fff;border-radius:18px;padding:18px;box-shadow:0 1px 2px rgba(0,0,0,.04)">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <sc-for list="{{ stats }}" as="s" hint-placeholder-count="3">
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <span style="font-size:12.5px;font-weight:600;color:#8B95A1;letter-spacing:-.2px">{{ s.label }}</span>
+            <span style="font-size:21px;font-weight:800;letter-spacing:-.7px;color:#191F28">{{ s.value }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="background:#191F28;border-radius:18px;padding:18px;color:#fff">
+      <div style="font-size:12px;font-weight:700;opacity:.65">다가오는 신청 시즌</div>
+      <div style="margin-top:6px;font-size:16px;font-weight:800;letter-spacing:-.5px">청년미래적금 2차</div>
+      <div style="margin-top:10px;display:inline-flex;padding:5px 10px;border-radius:8px;background:rgba(255,255,255,.14);font-size:12.5px;font-weight:800">10월 접수 예정</div>
+    </div>
+  </aside>
+
+  <div style="width:100%;max-width:480px;flex:none">
+
+  <sc-if value="{{ isForm }}" hint-placeholder-val="{{ true }}">
+  <div>
+    <div style="padding:52px 24px 28px">
+      <div style="display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:99px;background:rgba(49,130,246,.1);color:#1B64DA;font-size:12.5px;font-weight:700;letter-spacing:-.2px">2026년 9월 기준 정책 반영</div>
+      <h1 style="margin:16px 0 0;font-size:29px;line-height:1.35;font-weight:800;letter-spacing:-1.1px;text-wrap:pretty">내 조건에 맞는 청년 지원금<br><span style="color:#3182F6">1초 만에</span> 확인하기</h1>
+      <p style="margin:12px 0 0;font-size:15px;line-height:1.55;color:#6B7684;letter-spacing:-.3px;text-wrap:pretty">나이·소득·거주 형태만 입력하면 받을 수 있는 적금, 월세, 세금 혜택을 한 번에 모아드려요.</p>
+    </div>
+
+    <div style="margin:0 16px;background:#fff;border-radius:24px;padding:28px 22px 24px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 12px 32px -18px rgba(0,0,0,.18)">
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <label style="font-size:14px;font-weight:700;color:#4E5968;letter-spacing:-.3px">출생연도</label>
+        <div style="display:flex;align-items:center;gap:10px;background:#F9FAFB;border:1px solid #E5E8EB;border-radius:14px;padding:0 16px">
+          <input value="{{ birthYear }}" onInput="{{ onBirthYear }}" inputmode="numeric" maxlength="4" placeholder="2004" style="flex:1;min-width:0;border:none;background:transparent;font-family:inherit;font-size:19px;font-weight:700;letter-spacing:-.4px;color:#191F28;padding:15px 0">
+          <span style="font-size:15px;font-weight:600;color:#8B95A1">년생</span>
+          <span style="padding:5px 10px;border-radius:8px;background:rgba(49,130,246,.1);color:#1B64DA;font-size:13px;font-weight:700;white-space:nowrap">{{ ageLabel }}</span>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:9px;margin-top:24px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between">
+          <label style="font-size:14px;font-weight:700;color:#4E5968;letter-spacing:-.3px">월 세전 소득</label>
+          <span style="font-size:19px;font-weight:800;letter-spacing:-.5px;color:#3182F6">{{ incomeLabel }}</span>
+        </div>
+        <input type="range" min="0" max="500" step="10" value="{{ income }}" onInput="{{ onIncome }}" style="width:100%;height:26px;margin:2px 0 0;cursor:pointer">
+        <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:600;color:#8B95A1">
+          <span>0</span><span>250만</span><span>500만 이상</span>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:26px">
+        <label style="font-size:14px;font-weight:700;color:#4E5968;letter-spacing:-.3px">거주 형태</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <sc-for list="{{ residenceOpts }}" as="o" hint-placeholder-count="2">
+            <button onClick="{{ o.onPick }}" style="{{ o.style }}">{{ o.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:22px">
+        <label style="font-size:14px;font-weight:700;color:#4E5968;letter-spacing:-.3px">재직 상태</label>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ statusOpts }}" as="o" hint-placeholder-count="3">
+            <button onClick="{{ o.onPick }}" style="{{ o.style }}">
+              <span style="display:flex;flex-direction:column;gap:3px;text-align:left">
+                <span style="font-size:15.5px;font-weight:700;letter-spacing:-.4px">{{ o.label }}</span>
+                <span style="font-size:12.5px;font-weight:500;color:#8B95A1;letter-spacing:-.2px">{{ o.hint }}</span>
+              </span>
+              <span style="{{ o.dot }}"></span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+
+      <button onClick="{{ onSubmit }}" style="width:100%;margin-top:28px;padding:19px;border:none;border-radius:16px;background:#3182F6;color:#fff;font-family:inherit;font-size:17px;font-weight:800;letter-spacing:-.4px;cursor:pointer;box-shadow:0 10px 24px -10px rgba(49,130,246,.75)" style-hover="background:#1B64DA">맞춤 지원금 확인하기</button>
+      <p style="margin:12px 0 0;text-align:center;font-size:12px;color:#8B95A1;letter-spacing:-.2px">입력값은 저장되지 않아요 · 모의계산 결과예요</p>
+    </div>
+
+    <div style="margin:20px 16px 0;background:#fff;border-radius:20px;padding:20px">
+      <div style="font-size:15.5px;font-weight:800;letter-spacing:-.4px">🍯 신청 전 꿀팁</div>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:14px">
+        <sc-for list="{{ tips }}" as="t" hint-placeholder-count="3">
+          <div style="display:flex;gap:11px;align-items:flex-start">
+            <span style="flex:none;width:22px;height:22px;border-radius:7px;background:#F0F7FF;color:#1B64DA;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center">{{ t.no }}</span>
+            <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+              <span style="font-size:14px;font-weight:700;letter-spacing:-.3px">{{ t.title }}</span>
+              <span style="font-size:13px;line-height:1.55;color:#6B7684;letter-spacing:-.2px;text-wrap:pretty">{{ t.body }}</span>
+            </span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isLoading }}" hint-placeholder-val="{{ false }}">
+  <div style="min-height:82vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;animation:rise .3s ease both">
+    <div style="position:relative;width:76px;height:76px">
+      <div style="position:absolute;inset:0;border-radius:99px;border:6px solid #E5E8EB"></div>
+      <div style="position:absolute;inset:0;border-radius:99px;border:6px solid transparent;border-top-color:#3182F6;animation:spin .8s linear infinite"></div>
+    </div>
+    <div style="margin-top:26px;font-size:20px;font-weight:800;letter-spacing:-.7px;text-align:center">{{ loadingTitle }}</div>
+    <div style="margin-top:8px;font-size:14px;color:#6B7684;letter-spacing:-.3px">{{ loadingSub }}</div>
+    <div style="margin-top:28px;width:100%;max-width:300px;display:flex;flex-direction:column;gap:11px">
+      <sc-for list="{{ loadingSteps }}" as="s" hint-placeholder-count="3">
+        <div style="{{ s.style }}">
+          <span style="{{ s.mark }}">{{ s.icon }}</span>
+          <span style="font-size:14px;font-weight:700;letter-spacing:-.3px">{{ s.label }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+  <div style="animation:rise .45s cubic-bezier(.2,.8,.2,1) both">
+
+    <div style="display:flex;align-items:center;gap:10px;padding:46px 22px 18px">
+      <button onClick="{{ onBack }}" style="flex:none;width:38px;height:38px;border:none;border-radius:12px;background:#fff;color:#4E5968;font-family:inherit;font-size:17px;font-weight:800;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.06)" style-hover="background:#E5E8EB">‹</button>
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+        <span style="font-size:12.5px;font-weight:700;color:#8B95A1;letter-spacing:-.2px">모의계산 결과</span>
+        <span style="font-size:18px;font-weight:800;letter-spacing:-.6px">{{ nickname }}님이 받을 수 있는 혜택</span>
+      </div>
+    </div>
+
+    <div style="margin:0 16px">
+      <div style="background:linear-gradient(160deg,#1B64DA,#3182F6 60%,#4593FC);border-radius:22px;padding:24px 22px;color:#fff;box-shadow:0 14px 30px -16px rgba(27,100,218,.8)">
+        <div style="font-size:13.5px;font-weight:700;opacity:.82;letter-spacing:-.3px">매칭된 정책 {{ matchedCount }}개 · 예상 총 혜택</div>
+        <div style="margin-top:8px;font-size:34px;font-weight:800;letter-spacing:-1.6px">{{ totalLabel }}</div>
+        <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.22);display:flex;gap:26px">
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <span style="font-size:12px;font-weight:600;opacity:.8">매달 현금성 지원</span>
+            <span style="font-size:17px;font-weight:800;letter-spacing:-.5px">{{ monthlyLabel }}</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <span style="font-size:12px;font-weight:600;opacity:.8">만기·연간 목돈</span>
+            <span style="font-size:17px;font-weight:800;letter-spacing:-.5px">{{ lumpLabel }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:14px">
+        <sc-for list="{{ matched }}" as="p" hint-placeholder-count="3">
+          <div style="background:#fff;border-radius:20px;padding:20px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 10px 24px -18px rgba(0,0,0,.2)">
+            <div style="display:flex;align-items:flex-start;gap:13px">
+              <div style="flex:none;width:44px;height:44px;border-radius:13px;background:#F2F4F6;display:flex;align-items:center;justify-content:center;font-size:21px">{{ p.icon }}</div>
+              <div style="flex:1;min-width:0">
+                <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+                  <span style="font-size:16.5px;font-weight:800;letter-spacing:-.5px">{{ p.name }}</span>
+                  <sc-if value="{{ p.badge }}" hint-placeholder-val="{{ false }}"><span style="padding:3px 8px;border-radius:7px;background:#FFF0E8;color:#F2731C;font-size:11.5px;font-weight:800">{{ p.badge }}</span></sc-if>
+                </div>
+                <div style="margin-top:3px;font-size:12.5px;font-weight:600;color:#8B95A1;letter-spacing:-.2px">{{ p.agency }}</div>
+              </div>
+            </div>
+            <div style="margin-top:14px;padding:14px 16px;border-radius:14px;background:#F2F4F6">
+              <div style="font-size:11.5px;font-weight:700;color:#8B95A1">예상 혜택</div>
+              <div style="margin-top:4px;font-size:18px;font-weight:800;letter-spacing:-.6px;color:#1B64DA;text-wrap:pretty">{{ p.benefit }}</div>
+              <div style="margin-top:6px;font-size:13px;line-height:1.5;color:#4E5968;letter-spacing:-.2px;text-wrap:pretty">{{ p.summary }}</div>
+            </div>
+            <sc-if value="{{ p.open }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:12px;display:flex;flex-direction:column;gap:9px;padding:0 4px">
+                <sc-for list="{{ p.details }}" as="d" hint-placeholder-count="3">
+                  <div style="display:flex;gap:9px;align-items:flex-start">
+                    <span style="flex:none;margin-top:6px;width:5px;height:5px;border-radius:99px;background:#C4CBD3"></span>
+                    <span style="font-size:13.5px;line-height:1.55;color:#4E5968;letter-spacing:-.2px;text-wrap:pretty">{{ d }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:16px">
+              <button onClick="{{ p.onToggle }}" style="padding:14px;border:none;border-radius:13px;background:#F2F4F6;color:#4E5968;font-family:inherit;font-size:14.5px;font-weight:700;letter-spacing:-.3px;cursor:pointer" style-hover="background:#E5E8EB">{{ p.toggleLabel }}</button>
+              <button style="padding:14px;border:none;border-radius:13px;background:#191F28;color:#fff;font-family:inherit;font-size:14.5px;font-weight:700;letter-spacing:-.3px;cursor:pointer" style-hover="background:#333D4B">신청하기</button>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="margin-top:28px;background:#fff;border-radius:20px;padding:20px;box-shadow:0 1px 2px rgba(0,0,0,.04)">
+        <div style="font-size:15.5px;font-weight:800;letter-spacing:-.4px">아쉽게도 지금은 대상이 아니에요</div>
+        <div style="margin-top:4px;font-size:13px;color:#8B95A1;letter-spacing:-.2px">조건이 바뀌면 바로 신청할 수 있어요.</div>
+        <div style="display:flex;flex-direction:column;margin-top:14px">
+          <sc-for list="{{ unmatched }}" as="p" hint-placeholder-count="2">
+            <div style="display:flex;gap:12px;align-items:flex-start;padding:14px 0;border-top:1px solid #F2F4F6">
+              <div style="flex:none;width:36px;height:36px;border-radius:11px;background:#F2F4F6;display:flex;align-items:center;justify-content:center;font-size:16px;filter:grayscale(1);opacity:.75">{{ p.icon }}</div>
+              <div style="flex:1;min-width:0">
+                <div style="font-size:14.5px;font-weight:700;color:#6B7684;letter-spacing:-.3px">{{ p.name }}</div>
+                <div style="margin-top:3px;font-size:13px;line-height:1.5;color:#8B95A1;letter-spacing:-.2px;text-wrap:pretty">{{ p.reason }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="margin-top:14px;padding:15px 16px;border-radius:14px;background:#F0F7FF;display:flex;gap:10px">
+          <span style="flex:none;font-size:15px">💡</span>
+          <span style="font-size:13.5px;line-height:1.55;color:#1B64DA;font-weight:600;letter-spacing:-.2px;text-wrap:pretty">{{ tip }}</span>
+        </div>
+      </div>
+
+      <div style="margin-top:14px;background:#fff;border-radius:20px;padding:20px">
+        <div style="font-size:15.5px;font-weight:800;letter-spacing:-.4px">🍯 놓치면 아쉬운 꿀팁</div>
+        <div style="display:flex;flex-direction:column;gap:12px;margin-top:14px">
+          <sc-for list="{{ tips }}" as="t" hint-placeholder-count="3">
+            <div style="display:flex;gap:11px;align-items:flex-start">
+              <span style="flex:none;width:22px;height:22px;border-radius:7px;background:#F0F7FF;color:#1B64DA;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center">{{ t.no }}</span>
+              <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+                <span style="font-size:14px;font-weight:700;letter-spacing:-.3px">{{ t.title }}</span>
+                <span style="font-size:13px;line-height:1.55;color:#6B7684;letter-spacing:-.2px;text-wrap:pretty">{{ t.body }}</span>
+              </span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <button onClick="{{ onBack }}" style="width:100%;margin-top:14px;padding:17px;border:1.5px solid #E5E8EB;border-radius:16px;background:#fff;color:#4E5968;font-family:inherit;font-size:15.5px;font-weight:800;letter-spacing:-.3px;cursor:pointer" style-hover="background:#F9FAFB">조건 바꿔서 다시 계산하기</button>
+
+      <p style="margin:22px 8px 0;font-size:11.5px;line-height:1.6;color:#6B7684;letter-spacing:-.2px;text-wrap:pretty">본 화면은 UI 목업으로, 정책 금액·조건은 예시 데이터입니다. 실제 신청 자격은 각 기관 공고를 확인해 주세요.</p>
+    </div>
+  </div>
+  </sc-if>
+
+  </div>
+
+  <aside id="rail-r" style="display:none;width:190px;flex:none;position:sticky;top:56px;flex-direction:column;gap:14px;padding-top:56px">
+    <div style="font-size:13px;font-weight:800;letter-spacing:-.3px;color:#8B95A1">이번 주 많이 찾은 정책</div>
+    <div style="background:#fff;border-radius:18px;padding:8px 18px;box-shadow:0 1px 2px rgba(0,0,0,.04)">
+      <sc-for list="{{ trending }}" as="t" hint-placeholder-count="4">
+        <div style="{{ t.rowStyle }}">
+          <span style="flex:none;font-size:13px;font-weight:800;color:#3182F6;width:12px">{{ t.rank }}</span>
+          <span style="flex:1;min-width:0;font-size:13.5px;font-weight:700;letter-spacing:-.3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.name }}</span>
+          <span style="flex:none;font-size:12px;font-weight:700;color:#8B95A1">{{ t.delta }}</span>
+        </div>
+      </sc-for>
+    </div>
+    <div style="background:#F0F7FF;border-radius:18px;padding:18px">
+      <div style="font-size:13.5px;font-weight:800;color:#1B64DA;letter-spacing:-.3px">서류 미리 챙기기</div>
+      <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px">
+        <sc-for list="{{ docs }}" as="d" hint-placeholder-count="4">
+          <div style="display:flex;gap:8px;align-items:center;font-size:13px;font-weight:600;color:#1B64DA;letter-spacing:-.2px">
+            <span style="flex:none;width:15px;height:15px;border-radius:5px;background:rgba(49,130,246,.2);display:flex;align-items:center;justify-content:center;font-size:9px">✓</span>{{ d }}
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </aside>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+/* ────────────────────────────────────────────────────────────────
+   정책 데이터 (policies.json 역할)
+   👉 정책이 바뀌면 이 배열만 수정하면 됩니다.
+
+   id / name / agency / icon        기본 정보
+   badge     카드 강조 배지 (없으면 null) — 예: "10월 2차 신청"
+   benefit   결과 카드의 큰 예상 혜택 문구
+   summary   한 줄 요약 · details [자세히 보기] 항목
+   monthly   월 현금성 지원액(원) · lump 만기/연간 목돈(원)
+   cond      매칭 조건(AND, 없으면 제한 없음)
+             minAge / maxAge / maxIncomeMan(만원)
+             residence ["parents","alone"] / status ["sme","jobseek","student"]
+   missMsg   조건 미달 시 안내 문구
+   ──────────────────────────────────────────────────────────────── */
+const POLICIES = [
+  { id:"future-saving", name:"청년미래적금", agency:"금융위원회 · 시중 12개 은행", icon:"🏦",
+    badge:"10월 2차 신청",
+    benefit:"3년 만기 시 최대 2,200만 원",
+    summary:"월 50만 원 납입 시 정부 기여금 + 비과세 이자까지 더해 목돈으로 돌려받아요.",
+    details:["가입 기간 3년 · 월 최대 50만 원 납입","소득 구간별 정부 기여금 매칭 (월 최대 3.3만 원)","이자소득 비과세 + 만기 후 청약통장 연계 가능","2차 신청 접수: 10월 중 은행 앱에서 신청"],
+    monthly:0, lump:22000000,
+    cond:{ minAge:19, maxAge:34, maxIncomeMan:300 },
+    missMsg:"만 19~34세, 월 세전 소득 300만 원 이하일 때 신청할 수 있어요." },
+
+  { id:"rent-support", name:"청년월세 특별지원", agency:"국토교통부 · 복지로", icon:"🏠",
+    badge:null,
+    benefit:"월 최대 20만 원 지원",
+    summary:"보증금 5천만 원·월세 60만 원 이하 주택에 혼자 사는 청년에게 최대 12개월 지급해요.",
+    details:["실제 납부 월세 범위 내 최대 20만 원","지원 기간 12개월(회차별 분할 지급 가능)","부모와 별도 거주 + 주민등록 분리 필요","임대차계약서·월세 이체 증빙 제출"],
+    monthly:200000, lump:0,
+    cond:{ minAge:19, maxAge:34, maxIncomeMan:250, residence:["alone"] },
+    missMsg:"부모님과 따로 살고(독립), 월 세전 소득 250만 원 이하인 만 19~34세가 대상이에요." },
+
+  { id:"sme-tax", name:"중소기업 취업 청년 소득세 감면", agency:"국세청 · 홈택스", icon:"🧾",
+    badge:null,
+    benefit:"소득세 90% 감면 · 연 최대 150만 원",
+    summary:"중소기업에 취업한 청년은 최대 5년간 근로소득세를 90% 깎아줘요.",
+    details:["감면율 90%, 연간 한도 150만 원","취업일로부터 5년간 적용","회사에 감면 신청서 제출 → 원천징수 단계에서 반영","감면 제외 업종(금융·보험 등) 확인 필요"],
+    monthly:0, lump:1500000,
+    cond:{ minAge:15, maxAge:34, status:["sme"] },
+    missMsg:"중소기업 재직 중인 만 15~34세 근로자가 대상이에요." },
+
+  { id:"naeil-chaeum", name:"청년내일채움공제", agency:"고용노동부 · 워크넷", icon:"💰",
+    badge:null,
+    benefit:"2년 만기 시 최대 1,200만 원",
+    summary:"본인 납입금에 기업·정부 적립금이 더해져 2년 뒤 목돈으로 받아요.",
+    details:["본인 월 16만 원 × 24개월 납입","기업 부담금 + 정부 지원금 추가 적립","중도 퇴사 시 정부 적립분 환수","제조·건설업 중심 우선 지원"],
+    monthly:0, lump:12000000,
+    cond:{ minAge:15, maxAge:34, maxIncomeMan:320, status:["sme"] },
+    missMsg:"중소기업 재직 + 월 세전 소득 320만 원 이하 조건이 필요해요." },
+
+  { id:"job-support", name:"국민취업지원제도 Ⅰ유형", agency:"고용노동부 · 고용센터", icon:"🎯",
+    badge:null,
+    benefit:"구직촉진수당 월 50만 원 × 6개월",
+    summary:"구직 중인 청년에게 최대 300만 원의 수당과 맞춤 취업 서비스를 제공해요.",
+    details:["월 50만 원 × 6개월 (최대 300만 원)","부양가족 1인당 월 10만 원 추가 가능","취업활동계획 수립 및 구직활동 이행 필요","직업훈련·일경험 프로그램 연계"],
+    monthly:500000, lump:0,
+    cond:{ minAge:18, maxAge:34, maxIncomeMan:120, status:["jobseek"] },
+    missMsg:"구직 중이고 월 세전 소득 120만 원 이하인 청년이 신청할 수 있어요." },
+
+  { id:"housing-dream", name:"청년 주택드림 청약통장", agency:"국토교통부 · 시중은행", icon:"🔑",
+    badge:null,
+    benefit:"우대금리 최대 4.5% + 분양가 80% 대출",
+    summary:"청약 당첨 시 분양대금의 80%까지 저리로 빌릴 수 있는 전용 통장이에요.",
+    details:["납입 원금에 최대 연 4.5% 우대금리","월 100만 원까지 자유 납입","당첨 후 주택드림 대출(연 2%대) 연계","기존 청약통장은 전환 가입 가능"],
+    monthly:0, lump:0,
+    cond:{ minAge:19, maxAge:34, maxIncomeMan:417 },
+    missMsg:"만 19~34세, 연 소득 5천만 원(월 417만 원) 이하 무주택 청년이 대상이에요." },
+
+  { id:"culture-pass", name:"청년 문화예술패스", agency:"문화체육관광부", icon:"🎫",
+    badge:null,
+    benefit:"공연·전시 관람비 연 15만 원",
+    summary:"19세 청년에게 공연·전시에서 쓸 수 있는 포인트를 지급해요.",
+    details:["1인당 연 15만 원 (지역별 상이)","공연·전시 예매처에서 즉시 사용","발급 연도 내 소진 필요"],
+    monthly:0, lump:150000,
+    cond:{ minAge:19, maxAge:19 },
+    missMsg:"만 19세 청년만 발급받을 수 있어요." }
+];
+
+const CURRENT_YEAR = 2026;
+const RESIDENCE = [
+  { key:"parents", label:"부모님 동거" },
+  { key:"alone",   label:"독립 · 자취" }
+];
+const STATUS = [
+  { key:"sme",     label:"중소기업 재직",     hint:"4대보험 가입 근로자" },
+  { key:"jobseek", label:"구직 중",           hint:"미취업 · 취업 준비" },
+  { key:"student", label:"대학생 · 프리랜서", hint:"재학생, 아르바이트, 1인 사업자" }
+];
+/* 로딩 화면 단계 (표시 텍스트만 수정하면 됩니다) */
+const LOADING_STEPS = ["만 나이·소득 조건 확인", "7개 정책 자격 대조", "예상 수령액 계산"];
+/* 꿀팁 카드 */
+const TIPS = [
+  { no:"1", title:"소득은 '세전' 기준으로 보기", body:"대부분의 청년 정책은 건강보험료 부과 기준 세전 소득을 봅니다. 세후로 계산하면 탈락 판정이 날 수 있어요." },
+  { no:"2", title:"주민등록 분리부터 챙기기", body:"부모님과 따로 산다면 전입신고·주민등록 분리가 되어 있어야 월세 지원 심사를 통과해요." },
+  { no:"3", title:"적금·공제는 중복 가입 가능", body:"청년미래적금과 내일채움공제는 성격이 달라 동시에 유지할 수 있어요. 납입 여력만 확인하세요." }
+];
+const TRENDING = [
+  { rank:"1", name:"청년미래적금", delta:"+42%" },
+  { rank:"2", name:"청년월세 특별지원", delta:"+18%" },
+  { rank:"3", name:"주택드림 청약통장", delta:"+9%" },
+  { rank:"4", name:"국민취업지원제도", delta:"+4%" }
+];
+const DOCS = ["주민등록초본 (세대원 표기)", "건강보험 자격득실 확인서", "임대차계약서 사본", "최근 3개월 급여명세서"];
+
+const won = (v) => {
+  if (!v) return "0원";
+  if (v >= 10000000) { const e = v / 10000000; return (Number.isInteger(e) ? e : e.toFixed(1)) + "천만 원"; }
+  if (v >= 10000) return Math.round(v / 10000).toLocaleString() + "만 원";
+  return v.toLocaleString() + "원";
+};
+
+class Component extends DCLogic {
+  state = { birthYear:"2004", income:230, residence:"alone", status:"sme",
+            view:"form", step:0, open:{} };
+
+  componentWillUnmount() { clearInterval(this.timer); }
+
+  age() { const y = parseInt(this.state.birthYear, 10); return (y >= 1950 && y <= CURRENT_YEAR) ? CURRENT_YEAR - y : null; }
+
+  runLoading() {
+    clearInterval(this.timer);
+    this.setState({ view:"loading", step:0, open:{} });
+    this.timer = setInterval(() => {
+      this.setState(s => {
+        const next = s.step + 1;
+        if (next > LOADING_STEPS.length) { clearInterval(this.timer); return { view:"result", step:next }; }
+        return { step:next };
+      });
+    }, 620);
+  }
+
+  evaluate() {
+    const age = this.age(), { income, residence, status } = this.state;
+    const matched = [], unmatched = [];
+    POLICIES.forEach(p => {
+      const c = p.cond, fails = [];
+      if (age === null) fails.push("나이");
+      else { if (c.minAge != null && age < c.minAge) fails.push("나이"); if (c.maxAge != null && age > c.maxAge) fails.push("나이"); }
+      if (c.maxIncomeMan != null && income > c.maxIncomeMan) fails.push("소득");
+      if (c.residence && !c.residence.includes(residence)) fails.push("거주");
+      if (c.status && !c.status.includes(status)) fails.push("재직");
+      (fails.length ? unmatched : matched).push({ ...p, reason: p.missMsg });
+    });
+    return { matched, unmatched };
+  }
+
+  renderVals() {
+    const s = this.state, age = this.age();
+    const { matched, unmatched } = this.evaluate();
+    const monthly = matched.reduce((a, p) => a + p.monthly, 0);
+    const lump = matched.reduce((a, p) => a + p.lump, 0);
+
+    const chip = (on) => `display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding:16px 18px;border-radius:14px;cursor:pointer;font-family:inherit;text-align:left;transition:all .15s;border:1.5px solid ${on ? "#3182F6" : "#E5E8EB"};background:${on ? "rgba(49,130,246,.06)" : "#F9FAFB"};color:${on ? "#1B64DA" : "#4E5968"}`;
+
+    return {
+      isForm: s.view === "form",
+      isLoading: s.view === "loading",
+      isResult: s.view === "result",
+
+      birthYear: s.birthYear,
+      ageLabel: age === null ? "연도 입력" : "만 " + age + "세",
+      income: s.income,
+      incomeLabel: s.income >= 500 ? "500만 원 이상" : s.income.toLocaleString() + "만 원",
+      onBirthYear: (e) => this.setState({ birthYear: e.target.value.replace(/\D/g, "").slice(0, 4) }),
+      onIncome: (e) => this.setState({ income: +e.target.value }),
+      residenceOpts: RESIDENCE.map(o => ({
+        label: o.label,
+        style: chip(s.residence === o.key) + ";justify-content:center;font-size:15px;font-weight:700;letter-spacing:-.3px",
+        onPick: () => this.setState({ residence: o.key })
+      })),
+      statusOpts: STATUS.map(o => ({
+        label: o.label, hint: o.hint,
+        style: chip(s.status === o.key),
+        dot: `flex:none;width:20px;height:20px;border-radius:99px;border:${s.status === o.key ? "6px solid #3182F6" : "2px solid #D1D6DB"};background:#fff;box-sizing:border-box`,
+        onPick: () => this.setState({ status: o.key })
+      })),
+      onSubmit: () => this.runLoading(),
+      onBack: () => { clearInterval(this.timer); this.setState({ view:"form" }); },
+
+      loadingTitle: "조건을 맞춰보고 있어요",
+      loadingSub: (age === null ? "청년" : "만 " + age + "세") + " · 월 " + s.income + "만 원 기준",
+      loadingSteps: LOADING_STEPS.map((label, i) => {
+        const done = s.step > i, now = s.step === i;
+        return {
+          label,
+          style: `display:flex;align-items:center;gap:10px;padding:13px 16px;border-radius:14px;transition:all .3s;background:${done ? "#fff" : now ? "#fff" : "transparent"};color:${done ? "#191F28" : now ? "#3182F6" : "#B0B8C1"};box-shadow:${done || now ? "0 1px 3px rgba(0,0,0,.05)" : "none"};${now ? "animation:pulse 1s ease-in-out infinite;" : ""}`,
+          mark: `flex:none;width:20px;height:20px;border-radius:99px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;background:${done ? "#3182F6" : "#E5E8EB"};color:${done ? "#fff" : "#8B95A1"}`,
+          icon: done ? "✓" : String(i + 1)
+        };
+      }),
+
+      nickname: age === null ? "청년" : "만 " + age + "세 청년",
+      matchedCount: matched.length,
+      totalLabel: won(monthly * 12 + lump),
+      monthlyLabel: won(monthly),
+      lumpLabel: won(lump),
+      matched: matched.map(p => ({
+        ...p,
+        open: !!s.open[p.id],
+        toggleLabel: s.open[p.id] ? "접기" : "자세히 보기",
+        onToggle: () => this.setState(st => ({ open: { ...st.open, [p.id]: !st.open[p.id] } }))
+      })),
+      unmatched,
+      tips: TIPS,
+      trending: TRENDING.map((t, i) => ({ ...t, rowStyle: "display:flex;align-items:center;gap:11px;padding:13px 0" + (i ? ";border-top:1px solid #F2F4F6" : "") })),
+      docs: DOCS,
+      stats: [
+        { label:"수록된 청년 정책", value:POLICIES.length + "개" },
+        { label:"평균 매칭 정책 수", value:"3.2개" },
+        { label:"올해 남은 신청 시즌", value:"2회" }
+      ],
+      tip: s.income > 300
+        ? "소득이 기준을 넘는 정책이 많아요. 연말정산 기준 소득이 다르면 결과가 달라질 수 있으니 세전/세후 금액을 확인해 보세요."
+        : s.residence === "parents"
+          ? "부모님과 따로 살며 주민등록을 분리하면 청년월세 지원까지 받을 수 있어요."
+          : "구직 중이라면 국민취업지원제도, 재직 중이라면 내일채움공제를 함께 살펴보세요."
+    };
+  }
+}
+</script>
+</body>
+</html>
